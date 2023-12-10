@@ -1,15 +1,20 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<{ author: string; bot: string }[]>(
     []
   );
+  const feedRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
 
   const getResponse = async () => {
+    setText("");
+    setLoading(true);
+
     try {
       const response = await fetch(`http://localhost:8000/prompt/${text}`);
       if (!response.ok) {
@@ -23,23 +28,19 @@ export default function Home() {
           bot: data.candidates[0].content,
         },
       ]);
-      setText("");
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
+
       console.error("Error fetching response:", error);
     }
   };
 
   useEffect(() => {
-    const feed = document.querySelector(".feed");
-    if (feed) {
-      const observer = new MutationObserver(() => {
-        feed.scrollTop = feed.scrollHeight;
-      });
-      observer.observe(feed, { childList: true, subtree: true });
-
-      return () => observer.disconnect();
+    if (feedRef.current) {
+      feedRef.current.scrollTop = feedRef.current.scrollHeight;
     }
-  }, []);
+  }, [messages]);
 
   return (
     <div className="flex justify-center items-center p-4 my-[7vh]">
@@ -49,8 +50,8 @@ export default function Home() {
           <h2 className="text-5xl font-bold mb-4">PaLM 2 Bot</h2>
           <p className="mt-6">Type in English.</p>
         </div>
-        <div className="bg-white rounded-2xl shadow-xl mb-4 overflow-hidden border-2">
-          <div className="p-6 overflow-y-auto h-96">
+        <div className=" bg-white rounded-2xl shadow-xl mb-4 overflow-hidden border-2 feed">
+          <div ref={feedRef} className="p-6 overflow-y-auto h-96">
             {messages.map((message, index) => (
               <div key={index} className="mb-4 last:mb-0">
                 {message.author && (
@@ -80,8 +81,12 @@ export default function Home() {
               }
             }}
           />
-          <Button className="md:h-auto bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
-            Send
+          <Button
+            onClick={getResponse}
+            disabled={loading}
+            className="md:h-auto bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg"
+          >
+            {loading ? "Loading..." : "Send"}
           </Button>
         </div>
       </div>
