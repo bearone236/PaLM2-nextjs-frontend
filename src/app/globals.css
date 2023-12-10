@@ -1,90 +1,73 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: rgb(227, 227, 227);
-  display: flex;
-  justify-content: end;
-  height: 100vh;
-  align-items: end;
-  font-family: Arial, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
 }
 
-h2,
-h3 {
-  margin: 5px;
-}
-
-.chat-bot {
-  position: relative;
-  height: 500px;
-  width: 400px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 20px 20px 0 0;
-  margin: 20px 20px 0 20px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0 10px 36px, rgba(0, 0, 0, 0.06) 0 0 1px;
-  overflow: hidden;
-}
-
-.info-container {
-  height: 60px;
-  background: linear-gradient(rgb(22, 197, 141), rgb(6, 120, 84));
-  padding: 25px;
-  color: rgb(244, 244, 244);
-}
-
-textarea {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border: none;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 25px 70px 25px 25px;
-  border-top: 1px solid rgb(207, 207, 207);
-}
-
-textarea:focus {
-  outline: none;
-}
-
-button {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background-color: rgb(6, 120, 84);
-  color: rgb(207, 207, 207);
-  position: absolute;
-  bottom: 21px;
-  right: 21px;
-}
-
-.bubble {
-  width: 250px;
-  padding: 20px;
-  margin: 10px 25px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
-  color: rgb(74, 74, 74);
-}
-
-.question {
-  background-color: rgb(244, 244, 244);
-}
-
-.response {
-  margin-left: 85px;
-}
-
-.chat-header {
-  position: relative;
-  z-index: 1;
-}
-
-.feed {
-  position: absolute;
-  bottom: 82px;
-  left: 0;
-  width: 100%;
-  height: 250px;
-  overflow-y: scroll;
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
 }
