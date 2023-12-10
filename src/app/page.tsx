@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -6,6 +8,7 @@ export default function Home() {
   const [messages, setMessages] = useState<{ author: string; bot: string }[]>(
     []
   );
+
   const getResponse = async () => {
     try {
       const response = await fetch(`http://localhost:8000/prompt/${text}`);
@@ -34,45 +37,53 @@ export default function Home() {
       });
       observer.observe(feed, { childList: true, subtree: true });
 
-      // Clean up
       return () => observer.disconnect();
     }
   }, []);
+
   return (
-    <div>
-      <div className="chat-bot">
-        <div className="chat-header">
-          <div className="info-container">
-            <h3>Chat With</h3>
-            <h2>PaLM 2 Bot</h2>
+    <div className="flex justify-center items-center p-4 my-[7vh]">
+      <div className="w-full max-w-4xl">
+        <div className="text-center mb-10">
+          <h3 className="text-2xl font-semibold ">Chat With</h3>
+          <h2 className="text-5xl font-bold mb-4">PaLM 2 Bot</h2>
+          <p className="mt-6">Type in English.</p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-xl mb-4 overflow-hidden border-2">
+          <div className="p-6 overflow-y-auto h-96">
+            {messages.map((message, index) => (
+              <div key={index} className="mb-4 last:mb-0">
+                {message.author && (
+                  <div className="w-64 md:w-[50%] max-w-full p-5 my-2 mx-6 rounded-lg shadow-md text-gray-700 bg-green-200 ml-auto">
+                    {message.author}
+                  </div>
+                )}
+                {message.bot && (
+                  <div className="w-64 md:w-[50%] max-w-full p-5 my-2 mx-6 rounded-lg shadow-md text-gray-700 bg-gray-100">
+                    {message.bot}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path
-              fill="rgb(6, 120, 84)"
-              fillOpacity="1"
-              d="M0,224L60,218.7C120,213,240,203,360,186.7C480,171,600,149,720,154.7C840,160,960,192,1080,186.7C1200,181,1320,139,1380,117.3L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
-            ></path>
-          </svg>
         </div>
-        <div className="feed">
-          {messages.map((message, index) => (
-            <div key={index}>
-              <div className="question bubble">{message.author}</div>
-              <div className="response bubble">{message.bot}</div>
-            </div>
-          ))}
+
+        <div className="gap-2 flex mt-10">
+          <Textarea
+            className="w-full p-3 rounded-lg border border-gray-400 bg-white text-gray-700 resize-none hover:resize overflow-y-auto"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                getResponse();
+              }
+            }}
+          />
+          <Button className="md:h-auto bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
+            Send
+          </Button>
         </div>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              getResponse();
-            }
-          }}
-        />
-        <button onClick={getResponse}>→</button>
       </div>
     </div>
   );
