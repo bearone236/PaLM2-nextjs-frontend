@@ -9,7 +9,7 @@ export default function Home() {
     []
   );
   const feedRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getResponse = async () => {
     setText("");
